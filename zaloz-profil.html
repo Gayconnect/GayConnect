@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head Section with Title and Styles -->
+    <title>GayConnect - Strona Randkowa dla Gejów</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Navigation Styles */
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Partner Profile Styles */
+        .partner-profile {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+            text-align: center;
+        }
+
+        .partner-profile img {
+            max-width: 100%;
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* Form Styles */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>GayConnect</h1>
+        <!-- Navigation Menu -->
+        <nav>
+            <ul>
+                <li><a href="index.html">Strona główna</a></li>
+                <li><a href="profil.html">Twój Profil</a></li>
+                <li><a href="szukaj.html">Szukaj Partnera</a></li>
+                <li><a href="zaloz-profil.html">Załóż Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <section class="search">
+            <!-- Partner Search Form and Results -->
+            <form action="process-profile.php" method="POST" enctype="multipart/form-data">
+                <h2>Załóż Profil</h2>
+                <label for="username">Nazwa użytkownika:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="age">Wiek:</label>
+                <input type="number" id="age" name="age" required>
+
+                <label for="city">Miasto:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="interests">Zainteresowania:</label>
+                <textarea id="interests" name="interests" rows="4" required></textarea>
+
+                <!-- File input for avatar -->
+                <label for="avatar">Wybierz avatar:</label>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
+
+                <button type="submit">Załóż Profil</button>
+            </form>
+        </section>
+
+        <!-- Partner Search Section -->
+        
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        &copy; 2023 GayConnect
+    </footer>
+</body>
+</html>
