@@ -38,17 +38,45 @@
             padding: 10px;
         }
 
+        .profile-wrapper {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+
         .partner-profile {
             border: 1px solid #ccc;
             padding: 10px;
             margin: 10px;
-            display: inline-block;
             width: 200px;
             text-align: center;
+            transition: transform 0.3s ease-in-out;
         }
 
         .partner-profile img {
             max-width: 100%;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #b52a6c;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .arrow-left {
+            left: 0;
+        }
+
+        .arrow-right {
+            right: 0;
         }
 
         button {
@@ -59,13 +87,24 @@
             margin-top: 10px;
             cursor: pointer;
         }
+
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <header>
-        <!-- Zastąp tekst "GayConnect" logiem -->
         <img src="image/Logo_gay.png" alt="Logo GayConnect">
-        <nav>            <ul>
+        <div id="timer">Czas na stronie: 0s</div>
+        <nav>
+            <ul>
                 <li><a href="index.html">Strona główna</a></li>
                 <li><a href="profil.html">Twój Profil</a></li>
                 <li><a href="szukaj.html">Szukaj Partnera</a></li>
@@ -74,50 +113,125 @@
         </nav>
     </header>
     <main>
-        <section class="profile">
-            <h2>Twój Profil</h2>
-            <!-- Formularz do edycji profilu -->
+        <h2>Znajdź Partnera</h2>
+        <!-- Strzałki do przewijania -->
+        <button class="arrow arrow-left" onclick="scrollLeft()">&#9664;</button>
+        <button class="arrow arrow-right" onclick="scrollRight()">&#9654;</button>
+        
+        <!-- Wrapper na profile -->
+        <div class="profile-wrapper" id="profileWrapper">
             <div class="partner-profile">
-                <img src="image/jajanow.jpg" alt="Avatar użytkownika 2">
-                <h3>jewcheni jajanow</h3>
+                <img src="image/jajanow.jpg" alt="Avatar użytkownika 1">
+                <h3>Jewcheni Jajanow</h3>
                 <p>Wiek: 35</p>
                 <p>Miasto: Kraków</p>
                 <p>Zainteresowania: Sztuka, kultura</p>
-                <button>Wyślij wiadomość</button>
             </div>
-        </section>
-        <section class="search">
-            <h2>Szukaj Partnera</h2>
-            <!-- Formularz do wyszukiwania i lista wyników -->
             <div class="partner-profile">
-                <img src="image/chuj.jpg" alt="Avatar użytkownika 1">
+                <img src="image/chuj.jpg" alt="Avatar użytkownika 2">
                 <h3>Jan Kowalski</h3>
                 <p>Wiek: 28</p>
                 <p>Miasto: Warszawa</p>
                 <p>Zainteresowania: Sport, kolega Marek</p>
-                <button>Wyślij wiadomość</button>
             </div>
-
             <div class="partner-profile">
                 <img src="image/marek.jpg" alt="Avatar użytkownika 3">
-                <h3>Marek obsraniec</h3>
+                <h3>Marek Obsraniec</h3>
                 <p>Wiek: 35</p>
                 <p>Miasto: Kraków</p>
                 <p>Zainteresowania: SCP, SHORTS</p>
-                <button>Wyślij wiadomość</button>
             </div>
+            <!-- Dodaj więcej profili -->
             <div class="partner-profile">
                 <img src="image/prymus.jpg" alt="Avatar użytkownika 4">
-                <h3>prymus</h3>
+                <h3>Prymus</h3>
                 <p>Wiek: 35</p>
                 <p>Miasto: Kraków</p>
                 <p>Zainteresowania: ROWER, JAREK</p>
-                <button>Wyślij wiadomość</button>
             </div>
-        </section>
+            <div class="partner-profile">
+                <img src="image/sztywny.png" alt="Avatar użytkownika 5">
+                <h3>Sztywny</h3>
+                <p>Wiek: 25</p>
+                <p>Miasto: Wrocław</p>
+                <p>Zainteresowania: Siłownia, gry</p>
+            </div>
+            <div class="partner-profile">
+                <img src="image/chuj1.jpg" alt="Avatar użytkownika 6">
+                <h3>Wasyl</h3>
+                <p>Wiek: 29</p>
+                <p>Miasto: Targówek</p>
+                <p>Zainteresowania: Muzyka, rowery</p>
+            </div>
+            <div class="partner-profile">
+                <img src="image/chuj1.jpg" alt="Avatar użytkownika 7">
+                <h3>Norbert</h3>
+                <p>Wiek: 27</p>
+                <p>Miasto: Łódź</p>
+                <p>Zainteresowania: Podróże, filmy</p>
+            </div>
+            <div class="partner-profile">
+                <img src="image/chuj1.jpg" alt="Avatar użytkownika 8">
+                <h3>Marek</h3>
+                <p>Wiek: 33</p>
+                <p>Miasto: Gdańsk</p>
+                <p>Zainteresowania: Sport, technologia</p>
+            </div>
+            <div class="partner-profile">
+                <img src="image/chuj1.jpg" alt="Avatar użytkownika 9">
+                <h3>Jarek</h3>
+                <p>Wiek: 30</p>
+                <p>Miasto: Szczecin</p>
+                <p>Zainteresowania: Żeglarstwo, sport</p>
+            </div>
+            <div class="partner-profile">
+                <img src="image/chuj1.jpg" alt="Avatar użytkownika 10">
+                <h3>Andrzej</h3>
+                <p>Wiek: 26</p>
+                <p>Miasto: Katowice</p>
+                <p>Zainteresowania: Kino, fotografia</p>
+            </div>
+        </div>
     </main>
     <footer>
         &copy; 2023 GayConnect
     </footer>
+
+    <script>
+        let scrollPosition = 0;
+        const profileWrapper = document.getElementById('profileWrapper');
+        const profileWidth = 220; // Szerokość profilu + marginesy
+        const visibleProfiles = Math.floor(window.innerWidth / profileWidth); // Liczba widocznych profili na ekranie
+        const totalProfiles = profileWrapper.children.length; // Łączna liczba profili
+        const maxScroll = profileWidth * (totalProfiles - visibleProfiles); // Maksymalna wartość przewinięcia
+
+        function scrollLeft() {
+            // Upewnij się, że nie przewijasz poniżej zera
+            scrollPosition = Math.max(scrollPosition - profileWidth * 3, 0);
+            profileWrapper.style.transform = 'translateX(-' + scrollPosition + 'px)';
+        }
+
+        function scrollRight() {
+            // Upewnij się, że nie przewijasz poza maksymalną długość profili
+            scrollPosition = Math.min(scrollPosition + profileWidth * 3, maxScroll);
+            profileWrapper.style.transform = 'translateX(-' + scrollPosition + 'px)';
+        }
+
+                // JavaScript to handle the timer
+                let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            seconds++;
+            localStorage.setItem('timeSpent', seconds);
+            timerElement.textContent = `Czas na stronie: ${seconds}s`;
+        }
+
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+
+        // Display the initial time
+        timerElement.textContent = `Czas na stronie: ${seconds}s`;
+    </script>
 </body>
 </html>

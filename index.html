@@ -59,12 +59,23 @@
             margin-top: 10px;
             cursor: pointer;
         }
+        
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <header>
         <!-- Zastąp tekst "GayConnect" logiem -->
         <img src="image/Logo_gay.png" alt="Logo GayConnect">
+        <div id="timer">Czas na stronie: 0s</div>
         <nav>
             <ul>
                 <li><a href="index.html">Strona główna</a></li>
@@ -75,23 +86,13 @@
         </nav>
     </header>
     <main>
-        <section class="profile">
-            <h2>Twój Profil</h2>
-            <!-- Formularz do edycji profilu -->
-            <div class="partner-profile">
-                <img src="image/jajanow.jpg" alt="Avatar użytkownika 2">
-                <h3>jewcheni jajanow</h3>
-                <p>Wiek: 35</p>
-                <p>Miasto: Kraków</p>
-                <p>Zainteresowania: Sztuka, kultura</p> 
-            </div>
-        </section>
+    
         
         <section class="search">
             <h2>Szukaj Partnera</h2>
             <!-- Formularz do wyszukiwania i lista wyników -->
             <form action="search-results.html" method="GET">
-                <label for="search-input">Wyszukaj Profila:</label>
+                <label for="search-input">Wyszukaj Pedofila:</label>
                 <input type="text" id="search-input" name="search" placeholder="Wpisz imię lub miasto" required>
                 <button type="submit">Szukaj</button>
             </form>
@@ -150,5 +151,22 @@
     <footer>
         &copy; 2023 GayConnect
     </footer>
+    <script>
+        // JavaScript to handle the timer
+        let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            seconds++;
+            localStorage.setItem('timeSpent', seconds);
+            timerElement.textContent = `Czas na stronie: ${seconds}s`;
+        }
+
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+
+        // Display the initial time
+        timerElement.textContent = `Czas na stronie: ${seconds}s`;
+    </script>
 </body>
 </html>

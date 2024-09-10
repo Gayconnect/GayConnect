@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <!-- Head Section with Title and Styles -->
-    <title>GayConnect - Strona Randkowa dla Gejów</title>
+    <title>GayConnect - Załóż Profil</title>
+    <!-- Dodaj ikonę do przeglądarki -->
+    <link rel="icon" href="image/logo.jpg" type="image/x-icon">
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
 
-        /* Header Styles */
         header {
-            background-color: #333;
-            color: #fff;
+            background-color: #b52a6c;
+            color: #b52a6c;
             padding: 10px;
             text-align: center;
         }
 
-        /* Navigation Styles */
         nav ul {
             list-style-type: none;
         }
@@ -29,47 +27,23 @@
             margin-right: 20px;
         }
 
-        /* Main Content Styles */
         main {
             padding: 20px;
         }
 
-        /* Footer Styles */
         footer {
-            background-color: #333;
-            color: #fff;
+            background-color: #b52a6c;
+            color: #b52a6c;
             text-align: center;
             padding: 10px;
         }
 
-        /* Partner Profile Styles */
-        .partner-profile {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-            display: inline-block;
-            width: 200px;
-            text-align: center;
-        }
-
-        .partner-profile img {
-            max-width: 100%;
-        }
-
-        /* Button Styles */
-        button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        /* Form Styles */
         form {
             max-width: 400px;
             margin: 0 auto;
+            background-color: #f4f4f4;
+            padding: 20px;
+            border: 1px solid #ccc;
         }
 
         form label {
@@ -77,19 +51,50 @@
             margin-bottom: 5px;
         }
 
-        form input {
+        form input, form textarea {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             box-sizing: border-box;
         }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Styl podglądu obrazu */
+        #preview {
+            margin-top: 10px;
+            display: none; /* Początkowo ukryty */
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
-        <h1>GayConnect</h1>
-        <!-- Navigation Menu -->
+        <!-- Zastąp tekst "GayConnect" logiem -->
+        <img src="image/Logo_gay.png" alt="Logo GayConnect">
+        <div id="timer">Czas na stronie: 0s</div>
         <nav>
             <ul>
                 <li><a href="index.html">Strona główna</a></li>
@@ -100,12 +105,11 @@
         </nav>
     </header>
 
-    <!-- Main Content Section -->
     <main>
-        <section class="search">
-            <!-- Partner Search Form and Results -->
+        <section class="profile-form">
+            <h2>Załóż Profil</h2>
+            <!-- Formularz do zakładania profilu -->
             <form action="process-profile.php" method="POST" enctype="multipart/form-data">
-                <h2>Załóż Profil</h2>
                 <label for="username">Nazwa użytkownika:</label>
                 <input type="text" id="username" name="username" required>
 
@@ -120,20 +124,53 @@
 
                 <!-- File input for avatar -->
                 <label for="avatar">Wybierz avatar:</label>
-                <input type="file" id="avatar" name="avatar" accept="image/*">
+                <input type="file" id="avatar" name="avatar" accept="image/*" onchange="previewImage(event)">
+
+                <!-- Miejsce na podgląd obrazu -->
+                <img id="preview" alt="Podgląd zdjęcia profilowego">
 
                 <button type="submit">Załóż Profil</button>
             </form>
         </section>
-
-        <!-- Partner Search Section -->
-        
-        </section>
     </main>
 
-    <!-- Footer Section -->
     <footer>
         &copy; 2023 GayConnect
     </footer>
+
+    <script>
+        // Funkcja do podglądu wybranego obrazu
+        function previewImage(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block'; // Wyświetl podgląd
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none'; // Ukryj podgląd, jeśli nie ma pliku
+            }
+        }
+
+                // JavaScript to handle the timer
+                let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            seconds++;
+            localStorage.setItem('timeSpent', seconds);
+            timerElement.textContent = `Czas na stronie: ${seconds}s`;
+        }
+
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+
+        // Display the initial time
+        timerElement.textContent = `Czas na stronie: ${seconds}s`;
+    </script>
 </body>
 </html>
