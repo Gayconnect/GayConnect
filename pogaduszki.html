@@ -84,23 +84,36 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
-        #timer {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #fff;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // Konfiguracja Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBD_c6DKHe7a0XqOd2A-TUf2Zmsqh8-s8Y",
+            authDomain: "gayconnect-a7fae.firebaseapp.com",
+            databaseURL: "https://gayconnect-a7fae-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "gayconnect-a7fae",
+            storageBucket: "gayconnect-a7fae.appspot.com",
+            messagingSenderId: "692441752524",
+            appId: "1:692441752524:web:8554bd86cccd719768b36"
+        };
+        // Inicjalizacja Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Uwierzytelnianie anonimowe
+        firebase.auth().signInAnonymously().catch(function(error) {
+            console.log(error.message);
+        });
+
+        const db = firebase.database();
+    </script>
 </head>
 <body>
     <header>
         <img src="image/Logo_gay.png" alt="Logo GayConnect">
-        <div id="timer" onclick="location.href='ranking.html'">Czas na stronie: 0s</div>
         <nav>
             <ul>
                 <li><a href="index.html">Strona główna</a></li>
@@ -128,40 +141,34 @@
         &copy; 2023 GayConnect
     </footer>
     <script>
-        // Przykładowy JavaScript do obsługi czatu
         const messagesContainer = document.getElementById('messages');
         const messageForm = document.getElementById('message-form');
         const nicknameInput = document.getElementById('nickname');
         const messageInput = document.getElementById('message-input');
 
+        // Nasłuchiwanie nowych wiadomości
+        db.ref('messages').on('child_added', function(snapshot) {
+            const message = snapshot.val();
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${message.nickname}: ${message.text}`;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+
+        // Wysyłanie wiadomości
         messageForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const nickname = nicknameInput.value.trim();
             const message = messageInput.value.trim();
             if (nickname && message) {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = `${nickname}: ${message}`;
-                messagesContainer.appendChild(messageElement);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                db.ref('messages').push({
+                    nickname: nickname,
+                    text: message,
+                    timestamp: Date.now()
+                });
                 messageInput.value = '';
             }
         });
-
-                // JavaScript to handle the timer
-                let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
-        const timerElement = document.getElementById('timer');
-        
-        function updateTimer() {
-            seconds++;
-            localStorage.setItem('timeSpent', seconds);
-            timerElement.textContent = `Czas na stronie: ${seconds}s`;
-        }
-
-        // Update timer every second
-        setInterval(updateTimer, 1000);
-
-        // Display the initial time
-        timerElement.textContent = `Czas na stronie: ${seconds}s`;
     </script>
 </body>
 </html>
