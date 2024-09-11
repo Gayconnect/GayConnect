@@ -69,6 +69,11 @@
             border-radius: 50%;
         }
 
+        .golden-text {
+            color: gold;
+            font-weight: bold;
+        }
+
         #timer {
             position: absolute;
             top: 10px;
@@ -109,14 +114,14 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Jan Kowalski</td>
-                    <td><img src="image/chuj.jpg" alt="Avatar użytkownika 1" class="user-avatar"></td>
-                    <td>3600</td>
+                    <td class="golden-text">Marek Obsraniec (status złotego pedała)</td>
+                    <td><img src="image/marek.jpg" alt="Avatar użytkownika 1" class="user-avatar"></td>
+                    <td id="marek-time">13600</td> <!-- Dodano id -->
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>Marek obsraniec</td>
-                    <td><img src="image/marek.jpg" alt="Avatar użytkownika 2" class="user-avatar"></td>
+                    <td>Jan Kowalski</td>
+                    <td><img src="image/chuj.jpg" alt="Avatar użytkownika 2" class="user-avatar"></td>
                     <td>3400</td>
                 </tr>
                 <tr>
@@ -150,10 +155,10 @@
         &copy; 2023 GayConnect
     </footer>
     <script>
-        // JavaScript to handle the timer
+        // JavaScript to handle the global timer on the page
         let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
         const timerElement = document.getElementById('timer');
-        
+
         function updateTimer() {
             seconds++;
             localStorage.setItem('timeSpent', seconds);
@@ -165,6 +170,21 @@
 
         // Display the initial time
         timerElement.textContent = `Czas na stronie: ${seconds}s`;
+
+        // Handle Marek's time spent on the site
+        let marekTime = parseInt(localStorage.getItem('marekTime')) || 13600; // Load from localStorage or start at 3600
+
+        function updateMarekTime() {
+            marekTime++;
+            localStorage.setItem('marekTime', marekTime); // Save updated time to localStorage
+            document.getElementById('marek-time').textContent = marekTime;
+        }
+
+        // Call the function to update Marek's time every second
+        setInterval(updateMarekTime, 1000);
+
+        // Display the initial Marek's time
+        document.getElementById('marek-time').textContent = marekTime;
     </script>
 </body>
 </html>
