@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Pogaduszki - GayConnect</title>
+    <link rel="icon" href="image/logo.jpg" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #b52a6c;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #b52a6c;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        #chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #messages {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+
+        #message-form {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #message-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #message-form button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="image/Logo_gay.png" alt="Logo GayConnect">
+        <div id="timer" onclick="location.href='ranking.html'">Czas na stronie: 0s</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Strona główna</a></li>
+                <li><a href="profil.html">Twój Profil</a></li>
+                <li><a href="szukaj.html">Szukaj Partnera</a></li>
+                <li><a href="pogaduszki.html">Anonimowe Pogaduszki</a></li>
+                <li><a href="zaloz-profil.html">Załóż Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="chat-container">
+            <h2>Anonimowe Pogaduszki</h2>
+            <div id="messages">
+                <!-- Wiadomości czatu będą tutaj -->
+            </div>
+            <form id="message-form">
+                <input type="text" id="nickname" placeholder="Twój nick" required>
+                <input type="text" id="message-input" placeholder="Wpisz wiadomość" required>
+                <button type="submit">Wyślij</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        &copy; 2023 GayConnect
+    </footer>
+    <script>
+        // Przykładowy JavaScript do obsługi czatu
+        const messagesContainer = document.getElementById('messages');
+        const messageForm = document.getElementById('message-form');
+        const nicknameInput = document.getElementById('nickname');
+        const messageInput = document.getElementById('message-input');
+
+        messageForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nickname = nicknameInput.value.trim();
+            const message = messageInput.value.trim();
+            if (nickname && message) {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${nickname}: ${message}`;
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                messageInput.value = '';
+            }
+        });
+
+                // JavaScript to handle the timer
+                let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            seconds++;
+            localStorage.setItem('timeSpent', seconds);
+            timerElement.textContent = `Czas na stronie: ${seconds}s`;
+        }
+
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+
+        // Display the initial time
+        timerElement.textContent = `Czas na stronie: ${seconds}s`;
+    </script>
+</body>
+</html>
