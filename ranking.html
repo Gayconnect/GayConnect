@@ -114,9 +114,9 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td class="golden-text">Marek Obsraniec (status złotego pedała)</td>
+                    <td class="golden-text">Marek Obsraniec</td>
                     <td><img src="image/marek.jpg" alt="Avatar użytkownika 1" class="user-avatar"></td>
-                    <td id="marek-time">13600</td> <!-- Dodano id -->
+                    <td id="marek-time">3600</td> <!-- Dodano id -->
                 </tr>
                 <tr>
                     <td>2</td>
@@ -172,7 +172,7 @@
         timerElement.textContent = `Czas na stronie: ${seconds}s`;
 
         // Handle Marek's time spent on the site
-        let marekTime = parseInt(localStorage.getItem('marekTime')) || 13600; // Load from localStorage or start at 3600
+        let marekTime = parseInt(localStorage.getItem('marekTime')) || 3600; // Load from localStorage or start at 3600
 
         function updateMarekTime() {
             marekTime++;
@@ -180,11 +180,28 @@
             document.getElementById('marek-time').textContent = marekTime;
         }
 
+        // Update Marek's time based on real-time, even if the page was closed
+        window.addEventListener("load", () => {
+            const lastVisit = parseInt(localStorage.getItem('lastVisit')) || Date.now();
+            const currentTime = Date.now();
+            const timeDifference = Math.floor((currentTime - lastVisit) / 1000); // Time difference in seconds
+
+            // Add the time difference to Marek's time
+            marekTime += timeDifference;
+            localStorage.setItem('marekTime', marekTime); // Save updated time
+            document.getElementById('marek-time').textContent = marekTime;
+
+            // Update 'lastVisit' to the current time
+            localStorage.setItem('lastVisit', currentTime);
+        });
+
         // Call the function to update Marek's time every second
         setInterval(updateMarekTime, 1000);
 
-        // Display the initial Marek's time
-        document.getElementById('marek-time').textContent = marekTime;
+        // Before unloading the page, save the current time
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem('lastVisit', Date.now());
+        });
     </script>
 </body>
 </html>
