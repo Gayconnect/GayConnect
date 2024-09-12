@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GayConnect - Załóż Profil i Logowanie</title>
     <link rel="icon" href="image/logo.jpg" type="image/x-icon">
     <style>
@@ -12,18 +14,28 @@
 
         header {
             background-color: #b52a6c;
-            color: #b52a6c;
+            color: #fff;
             padding: 10px;
             text-align: center;
         }
 
+        header img {
+            max-width: 150px;
+        }
+
         nav ul {
             list-style-type: none;
+            padding: 0;
         }
 
         nav ul li {
             display: inline;
             margin-right: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
         }
 
         main {
@@ -32,7 +44,7 @@
 
         footer {
             background-color: #b52a6c;
-            color: #b52a6c;
+            color: #fff;
             text-align: center;
             padding: 10px;
         }
@@ -125,6 +137,12 @@
                 <label for="username">Nazwa użytkownika:</label>
                 <input type="text" id="username" name="username" required>
 
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" name="password" required>
+
                 <label for="age">Wiek:</label>
                 <input type="number" id="age" name="age" required>
 
@@ -145,11 +163,11 @@
         <section class="login-form">
             <h2>Logowanie</h2>
             <form id="login-form">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email-login">Email:</label>
+                <input type="email" id="email-login" name="email" required>
 
-                <label for="password">Hasło:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password-login">Hasło:</label>
+                <input type="password" id="password-login" name="password" required>
 
                 <button type="submit">Zaloguj się</button>
             </form>
@@ -234,13 +252,18 @@
             e.preventDefault();
 
             const username = profileForm['username'].value;
+            const email = profileForm['email'].value;
+            const password = profileForm['password'].value;
             const age = profileForm['age'].value;
             const city = profileForm['city'].value;
             const interests = profileForm['interests'].value;
 
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    // Zapisz dane do Firestore
+            // Utwórz użytkownika w Firebase Authentication
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    // Zapisz dodatkowe dane do Firestore
                     db.collection('profiles').doc(user.uid).set({
                         username: username,
                         age: age,
@@ -256,10 +279,10 @@
                     .catch((error) => {
                         console.error('Błąd podczas zakładania profilu: ', error);
                     });
-                } else {
-                    alert('Musisz być zalogowany, aby założyć profil.');
-                }
-            });
+                })
+                .catch((error) => {
+                    alert('Błąd podczas tworzenia konta: ' + error.message);
+                });
         });
 
         // Funkcja podglądu obrazu
