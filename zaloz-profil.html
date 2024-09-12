@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>GayConnect - Załóż Profil</title>
-    <!-- Dodaj ikonę do przeglądarki -->
+    <title>GayConnect - Załóż Profil i Logowanie</title>
     <link rel="icon" href="image/logo.jpg" type="image/x-icon">
     <style>
         body {
@@ -79,20 +78,33 @@
             border-radius: 5px;
         }
 
-        /* Styl podglądu obrazu */
         #preview {
             margin-top: 10px;
-            display: none; /* Początkowo ukryty */
+            display: none;
             max-width: 100%;
             height: auto;
             border: 1px solid #ccc;
             padding: 10px;
         }
+
+        #login-message {
+            margin-top: 10px;
+            color: red;
+        }
+
+        #logout-btn {
+            display: none;
+            margin-top: 10px;
+            background-color: #b52a6c;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header>
-        <!-- Zastąp tekst "GayConnect" logiem -->
         <img src="image/Logo_gay.png" alt="Logo GayConnect">
         <div id="timer" onclick="location.href='ranking.html'">Czas na stronie: 0s</div>
         <nav>
@@ -100,7 +112,7 @@
                 <li><a href="index.html">Strona główna</a></li>
                 <li><a href="profil.html">Twój Profil</a></li>
                 <li><a href="szukaj.html">Szukaj Partnera</a></li>
-                <li><a href="pogaduszki.html">Anonimowe Pogejuszki</a></li>
+                <li><a href="pogaduszki.html">Anonimowe Pogaduszki</a></li>
                 <li><a href="zaloz-profil.html">Załóż Profil</a></li>
             </ul>
         </nav>
@@ -109,7 +121,6 @@
     <main>
         <section class="profile-form">
             <h2>Załóż Profil</h2>
-            <!-- Formularz do zakładania profilu -->
             <form action="process-profile.php" method="POST" enctype="multipart/form-data">
                 <label for="username">Nazwa użytkownika:</label>
                 <input type="text" id="username" name="username" required>
@@ -123,15 +134,27 @@
                 <label for="interests">Zainteresowania:</label>
                 <textarea id="interests" name="interests" rows="4" required></textarea>
 
-                <!-- File input for avatar -->
                 <label for="avatar">Wybierz avatar:</label>
                 <input type="file" id="avatar" name="avatar" accept="image/*" onchange="previewImage(event)">
-
-                <!-- Miejsce na podgląd obrazu -->
                 <img id="preview" alt="Podgląd zdjęcia profilowego">
 
                 <button type="submit">Załóż Profil</button>
             </form>
+        </section>
+
+        <section class="login-form">
+            <h2>Logowanie</h2>
+            <form id="login-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Zaloguj się</button>
+            </form>
+            <div id="login-message"></div>
+            <button id="logout-btn">Wyloguj się</button>
         </section>
     </main>
 
@@ -139,8 +162,70 @@
         &copy; 2023 GayConnect
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+
     <script>
-        // Funkcja do podglądu wybranego obrazu
+        // Konfiguracja Firebase - uzupełnij swoimi danymi z konsoli Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9WRe-N1u5aYbZ8eGQG0DY8_oROQHk8Vc",
+            authDomain: "gayconnect-4d04e.firebaseapp.com",
+            databaseURL: "https://gayconnect-4d04e-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "gayconnect-4d04e",
+            storageBucket: "gayconnect-4d04e.appspot.com",
+            messagingSenderId: "437000428429",
+            appId: "1:437000428429:web:d1e78fd9e68c006fecfbc4"
+        };
+
+        // Inicjalizacja Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Formularz logowania
+        const loginForm = document.getElementById('login-form');
+        const loginMessage = document.getElementById('login-message');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = loginForm['email'].value;
+            const password = loginForm['password'].value;
+
+            // Logowanie z Firebase
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    loginMessage.textContent = `Zalogowano jako: ${user.email}`;
+                    loginMessage.style.color = 'green';
+                    logoutBtn.style.display = 'block';
+                })
+                .catch((error) => {
+                    loginMessage.textContent = `Błąd: ${error.message}`;
+                    loginMessage.style.color = 'red';
+                });
+        });
+
+        // Wylogowanie
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                loginMessage.textContent = 'Wylogowano pomyślnie.';
+                loginMessage.style.color = 'green';
+                logoutBtn.style.display = 'none';
+            });
+        });
+
+        // Wyświetlanie przycisku wylogowania, jeśli użytkownik jest zalogowany
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                logoutBtn.style.display = 'block';
+            } else {
+                logoutBtn.style.display = 'none';
+            }
+        });
+
+        // Funkcja podglądu obrazu
         function previewImage(event) {
             const preview = document.getElementById('preview');
             const file = event.target.files[0];
@@ -157,8 +242,8 @@
             }
         }
 
-                // JavaScript to handle the timer
-                let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
+        // Zegar czasu na stronie
+        let seconds = parseInt(localStorage.getItem('timeSpent')) || 0;
         const timerElement = document.getElementById('timer');
         
         function updateTimer() {
@@ -167,10 +252,7 @@
             timerElement.textContent = `Czas na stronie: ${seconds}s`;
         }
 
-        // Update timer every second
         setInterval(updateTimer, 1000);
-
-        // Display the initial time
         timerElement.textContent = `Czas na stronie: ${seconds}s`;
     </script>
 </body>
